@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Neuro-Symbolic AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#1a1a1a',
+                        darker: '#111111',
+                        brand: '#2E7D32', // Greenview-like green
+                        brandHover: '#1B5E20'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+        /* Custom scrollbar for chat */
+        #chat-history::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-history::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #chat-history::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <!-- Navbar -->
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+        <div class="text-2xl font-serif font-bold flex items-center gap-2">
+            <span class="text-brand">❖</span>
+            VERIFIER<span class="text-gray-400 text-sm font-sans mt-1">.AI</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium text-gray-300">
+            <a href="#" class="hover:text-white transition">Platform</a>
+            <a href="#" class="hover:text-white transition">ESG Services</a>
+            <a href="#" class="hover:text-white transition">Our Approach</a>
+            <a href="#" class="hover:text-white transition">AI Assistant</a>
+        </div>
+        <button class="px-5 py-2 bg-transparent border border-gray-600 rounded-sm hover:border-white transition text-sm">
+            Contact Us
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-8 pt-12 pb-20">
+        <div class="max-w-3xl">
+            <h1 class="text-5xl font-serif font-bold leading-tight mb-6">
+                Powering secure investments with Neuro-Symbolic AI
+            </h1>
+            <p class="text-gray-400 text-lg mb-10 leading-relaxed">
+                We help investors and funds navigate complex ESG regulations and financial guardrails using the world's most advanced AI architecture.
+            </p>
+        </div>
+        
+        <!-- Placeholder for the Hero Image -->
+        <div class="w-full h-[400px] bg-gray-800 rounded-md mt-4 overflow-hidden relative border border-gray-700 flex items-center justify-center">
+            <div class="text-gray-500 flex flex-col items-center">
+                <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span>Financial District / Nature Image</span>
+            </div>
+            <div class="absolute bottom-4 right-4 bg-black/60 px-3 py-1 text-xs rounded text-gray-300 backdrop-blur-sm">Verified Portfolio</div>
+        </div>
+    </section>
+
+    <!-- 3 Pillars Section -->
+    <section class="bg-darker border-y border-gray-800">
+        <div class="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            
+            <!-- Pillar 1 -->
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 text-brand">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4">Neural Agent (LLM)</h3>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                    Access our interactive chatbot powered by Gemini 3.5. Understands natural language, financial news, and executes complex queries.
+                </p>
+                <a href="#" class="text-brand text-sm font-semibold hover:underline mt-auto">Learn more ></a>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 text-brand">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4">Symbolic Guardrails</h3>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                    Z3 SMT Solver acts as an absolute mathematical shield. Guarantees 100% compliance with ESG constraints and budget limits.
+                </p>
+                <a href="#" class="text-brand text-sm font-semibold hover:underline mt-auto">Learn more ></a>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 text-brand">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4">Batch Verification</h3>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                    Automated pipeline scanning S&P 500 stocks nightly. Automatically generates approved and rejected portfolios.
+                </p>
+                <a href="#" class="text-brand text-sm font-semibold hover:underline mt-auto">Learn more ></a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Our Approach Section -->
+    <section class="max-w-7xl mx-auto px-8 py-24 flex flex-col md:flex-row gap-16 items-center">
+        <!-- Left Image -->
+        <div class="w-full md:w-1/2 h-[500px] bg-gray-800 rounded-md overflow-hidden relative border border-gray-700">
+            <div class="absolute inset-0 flex items-center justify-center text-gray-500">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <!-- Mock UI overlay on image -->
+            <div class="absolute bottom-6 left-6 right-6 flex gap-2">
+                <div class="h-1 bg-white/20 flex-1 rounded-full"><div class="h-full w-1/3 bg-brand rounded-full"></div></div>
+                <div class="h-1 bg-white/20 flex-1 rounded-full"><div class="h-full w-1/2 bg-brand rounded-full"></div></div>
+            </div>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="w-full md:w-1/2">
+            <h2 class="text-3xl font-serif font-bold mb-6">Our Approach</h2>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                Recognized as a global leader in AI-driven investment consulting, we empower hedge funds and institutional investors to make data-driven decisions that strictly adhere to ESG mandates.
+            </p>
+            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                Unlike traditional Machine Learning models that rely on probabilities and are prone to "hallucinations," our <span class="text-gray-200 font-semibold border-b border-gray-600 pb-0.5">Neuro-Symbolic Architecture</span> ensures absolute compliance. It combines the reasoning capabilities of Large Language Models (LLMs) with the strict mathematical verification of Z3 SMT Solvers.
+            </p>
+            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                We combine deep industry expertise with powerful data analytics to turn complex ESG requirements into clear, actionable investment strategies. At the heart of this approach is our interactive 24/7 AI Assistant.
+            </p>
+            <p class="text-gray-400 text-sm leading-relaxed">
+                With this hybrid system, we provide the strategy, analytics, and software to help the financial industry achieve measurable sustainability progress - without sacrificing returns.
+            </p>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="bg-darker py-16 border-y border-gray-800 text-center px-8">
+        <h2 class="text-2xl font-serif font-bold mb-3">Partnering with the World's Leading Financial Institutions</h2>
+        <p class="text-gray-400 text-sm mb-10">Trusted by global asset managers, real estate investment trusts, and private equity firms.</p>
+        <a href="#" class="text-brand text-sm font-semibold hover:underline mb-10 inline-block">Meet Our Partners ></a>
+        
+        <!-- Carousel Mockup -->
+        <div class="flex justify-center items-center gap-6 max-w-5xl mx-auto mt-4 overflow-hidden">
+            <button class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-gray-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            
+            <div class="flex gap-4">
+                <div class="w-32 h-16 bg-white flex items-center justify-center p-2 rounded-sm"><div class="text-blue-900 font-bold text-lg">S&P 500</div></div>
+                <div class="w-32 h-16 bg-white flex items-center justify-center p-2 rounded-sm"><div class="text-yellow-600 font-bold text-xl font-serif">Yahoo!</div></div>
+                <div class="w-32 h-16 bg-white flex items-center justify-center p-2 rounded-sm"><div class="text-black font-bold">WIKIPEDIA</div></div>
+                <div class="w-32 h-16 bg-white flex items-center justify-center p-2 rounded-sm"><div class="text-gray-800 font-bold text-sm text-center">ESG Data<br>Providers</div></div>
+            </div>
+
+            <button class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-gray-800 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- Verifier Portal / AI Chatbot Section -->
+    <section class="max-w-7xl mx-auto px-8 py-24" id="ai-chat-section">
+        <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div class="max-w-2xl">
+                <h2 class="text-3xl font-serif font-bold mb-4">Verifier Interactive AI</h2>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    A seamless integration of AI and financial compliance. Ask our interactive agent to construct a portfolio, and watch in real-time as the Neuro-Symbolic engine validates every decision against market data, budget constraints, and ESG risk thresholds.
+                </p>
+            </div>
+            <div class="flex flex-col gap-2 min-w-[200px]">
+                <label for="budget-input" class="text-xs text-gray-400 font-semibold uppercase">Budget Constraints ($)</label>
+                <input type="number" id="budget-input" value="10000" class="bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-brand">
+            </div>
+        </div>
+        
+        <!-- UI Dashboard / Chatbot -->
+        <div class="w-full bg-[#f4f7f6] text-gray-800 rounded-lg overflow-hidden shadow-2xl ml-auto border border-gray-200">
+            <div class="flex h-[600px]">
+                <!-- Sidebar -->
+                <div class="w-64 border-r border-gray-200 bg-white p-6 hidden md:flex flex-col">
+                    <div class="font-bold text-sm text-gray-500 mb-6 uppercase tracking-wider">Navigation</div>
+                    <ul class="space-y-4 text-sm font-medium flex-1">
+                        <li class="text-brand flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg> AI Consultant</li>
+                        <li class="text-gray-600 flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Batch Pipeline</li>
+                        <li class="text-gray-600 flex items-center gap-3"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg> Settings</li>
+                    </ul>
+                </div>
+                <!-- Chat Area -->
+                <div class="flex-1 flex flex-col bg-gray-50 relative">
+                    <div id="chat-history" class="flex-1 p-8 overflow-y-auto flex flex-col gap-6 scroll-smooth">
+                        <!-- Messages dynamically inserted here -->
+                    </div>
+                    <!-- Typing Indicator -->
+                    <div id="typing-indicator" class="hidden absolute bottom-20 left-8 bg-white border border-gray-200 px-4 py-2 rounded-full shadow-sm text-sm text-gray-500 flex items-center gap-2">
+                        <div class="flex gap-1">
+                            <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+                            <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+                            <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+                        </div>
+                        Processing request...
+                    </div>
+                    <!-- Input -->
+                    <div class="p-4 bg-white border-t border-gray-200">
+                        <div class="relative">
+                            <input type="text" id="chat-input" placeholder="Type your ESG investment query..." class="w-full bg-gray-50 border border-gray-300 rounded-full py-3 px-6 pr-12 text-sm focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                            <button id="send-button" class="absolute right-3 top-2.5 p-1 text-brand hover:bg-green-50 rounded-full transition">
+                                <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Illustrations Sections -->
+    <section class="max-w-7xl mx-auto px-8 py-20 border-t border-gray-800 grid grid-cols-1 md:grid-cols-2 gap-16">
+        <div>
+            <h2 class="text-3xl font-serif font-bold mb-4">Corporate Consulting</h2>
+            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                Greenview partners with hospitality leaders to design and implement tailored ESG strategies. From setting science-based targets to achieving B Corp certification, we provide actionable roadmaps that align with global standards.
+            </p>
+            <div class="h-64 bg-gray-800 rounded flex items-center justify-center border border-gray-700 mt-8">
+                <!-- Flat illustration mockup -->
+                <div class="relative w-32 h-32">
+                    <div class="absolute inset-0 bg-brand/20 rounded-full"></div>
+                    <svg class="w-full h-full text-brand p-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="text-3xl font-serif font-bold mb-4">Industry-wide Initiatives</h2>
+            <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                Greenview leads collaborative efforts across the industry to advance sustainability. Our partnerships with organizations such as the Sustainable Hospitality Alliance drive collective action towards net positive hospitality.
+            </p>
+            <div class="h-64 bg-gray-800 rounded flex items-center justify-center border border-gray-700 mt-8">
+                <!-- Flat illustration mockup -->
+                <div class="relative w-32 h-32">
+                    <div class="absolute inset-0 bg-blue-500/20 rounded-full"></div>
+                    <svg class="w-full h-full text-blue-400 p-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21.121 12.121A9.99 9.99 0 112.879 12.121a9.99 9.99 0 0118.242 0z"></path></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="max-w-4xl mx-auto px-8 py-16 mb-20">
+        <div class="bg-brand rounded flex flex-col md:flex-row items-center justify-between p-12 text-white shadow-xl">
+            <div>
+                <h2 class="text-2xl font-serif font-bold mb-2">Get ahead with Verifier.ai</h2>
+                <p class="text-green-100 text-sm">Partner with the leading AI sustainability company to manage and grow your secure portfolio.</p>
+            </div>
+            <button class="mt-6 md:mt-0 px-8 py-3 bg-darker hover:bg-black transition rounded-sm text-sm font-semibold whitespace-nowrap">
+                Get in Touch
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#141414] pt-20 pb-10 border-t border-gray-800 text-sm">
+        <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div>
+                <div class="text-xl font-serif font-bold flex items-center gap-2 mb-6">
+                    <span class="text-brand">❖</span> VERIFIER<span class="text-gray-400 text-xs font-sans mt-1">.AI</span>
+                </div>
+                <p class="text-gray-500 text-xs leading-relaxed mb-4">
+                    Singapore Office:<br>
+                    1 Maxwell Road, #16-01<br>
+                    Singapore 069114
+                </p>
+                <div class="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center border border-blue-800 text-blue-400 text-xs font-bold mt-6">B CORP</div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-xs">Company</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Team</a></li>
+                    <li><a href="#" class="hover:text-white transition">Clients</a></li>
+                </ul>
+                
+                <h4 class="text-white font-semibold mb-6 mt-10 uppercase tracking-wider text-xs">Resources</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">News</a></li>
+                    <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-xs">Advisory</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">ESG Program Strategy</a></li>
+                    <li><a href="#" class="hover:text-white transition">LEED Certification</a></li>
+                    <li><a href="#" class="hover:text-white transition">Setting Goals & Targets</a></li>
+                    <li><a href="#" class="hover:text-white transition">Sustainability Reporting</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-semibold mb-6 uppercase tracking-wider text-xs">Software</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="#" class="hover:text-white transition">Data Management</a></li>
+                    <li><a href="#" class="hover:text-white transition">AI Chatbot</a></li>
+                    <li><a href="#" class="hover:text-white transition">Batch Pipeline</a></li>
+                    <li><a href="#" class="hover:text-white transition">Z3 Shield API</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center text-gray-500 text-xs">
+            <p>© 2024 Verifier AI. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white transition">Terms of Use</a>
+                <a href="#" class="hover:text-white transition">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.getElementById('chat-history');
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-button');
+            const budgetInput = document.getElementById('budget-input');
+            const typingIndicator = document.getElementById('typing-indicator');
+
+            const history = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+            if (history.length === 0) {
+                history.push({
+                    role: 'agent',
+                    data: {
+                        type: 'greeting',
+                        message: 'Hello! I am Verifier.ai. How can I help you construct your ESG-compliant portfolio today?'
+                    }
+                });
+                saveHistory();
+            }
+            
+            history.forEach(msg => appendMessage(msg, false));
+            scrollToBottom();
+
+            function saveHistory() {
+                sessionStorage.setItem('chatHistory', JSON.stringify(history));
+            }
+
+            function scrollToBottom() {
+                setTimeout(() => {
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 100);
+            }
+
+            function escapeHtml(unsafe) {
+                if (!unsafe) return '';
+                return unsafe
+                     .toString()
+                     .replace(/&/g, "&amp;")
+                     .replace(/</g, "&lt;")
+                     .replace(/>/g, "&gt;")
+                     .replace(/"/g, "&quot;")
+                     .replace(/'/g, "&#039;");
+            }
+
+            function appendMessage(msg, animate = true) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = \`flex gap-4 \${msg.role === 'user' ? 'justify-end' : ''} \${animate ? 'animate-fade-in-up' : ''}\`;
+                
+                if (msg.role === 'user') {
+                    msgDiv.innerHTML = \`
+                        <div class="bg-brand text-white p-4 rounded-xl rounded-tr-none text-sm max-w-md shadow-sm">
+                            \${escapeHtml(msg.content)}
+                        </div>
+                    \`;
+                } else {
+                    let contentHtml = '';
+                    if (msg.data.type === 'greeting') {
+                        contentHtml = \`<p class="text-gray-800">\${escapeHtml(msg.data.message)}</p>\`;
+                    } else if (msg.data.type === 'analysis') {
+                        contentHtml = msg.data.results.map(r => {
+                            const isApproved = r.z3_verification?.status === 'approved';
+                            const statusColor = isApproved ? 'text-brand' : 'text-red-600';
+                            const statusBg = isApproved ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+                            const statusIcon = isApproved 
+                                ? \`<svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>\`
+                                : \`<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>\`;
+
+                            return \`
+                                <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+                                    <div class="px-4 py-2 flex justify-between items-center border-b border-gray-100 \${statusBg}">
+                                        <div class="font-bold text-gray-800 flex items-center gap-2">
+                                            \${escapeHtml(r.ticker)} 
+                                            <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 \${statusColor} flex items-center gap-1 shadow-sm">
+                                                \${statusIcon} \${isApproved ? 'Approved' : 'Rejected'}
+                                            </span>
+                                        </div>
+                                        <div class="text-xs font-mono text-gray-500">\$\${r.market_price?.toFixed(2) || 'N/A'}</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-50 grid grid-cols-2 gap-4 text-xs">
+                                        <div>
+                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">ESG Risk</div>
+                                            <div class="font-semibold text-gray-800">\${r.esg_risk_score || 'N/A'}</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">Controversy</div>
+                                            <div class="font-semibold text-gray-800">\${r.controversy_level || 'N/A'}</div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">AI Decision</div>
+                                            <div class="text-gray-700 bg-white p-2 rounded border border-gray-200">
+                                                <span class="font-semibold text-gray-900">\${r.decision?.Action || 'HOLD'} \${r.decision?.Quantity || 0} shares</span> @ \$\${r.decision?.Target_Price || r.market_price || 0}<br>
+                                                <span class="text-gray-500 italic mt-1 block">\${escapeHtml(r.decision?.Reasoning || 'No reasoning provided.')}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">Z3 Verification</div>
+                                            <div class="text-gray-700 bg-white p-2 rounded border border-gray-200 font-mono text-[10px]">
+                                                \${escapeHtml(r.z3_verification?.reason || 'No verification data.')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            \`;
+                        }).join('');
+                    }
+
+                    msgDiv.innerHTML = \`
+                        <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-md text-xs font-bold">AI</div>
+                        <div class="bg-white border border-gray-200 p-4 rounded-xl rounded-tl-none text-sm max-w-xl shadow-sm w-full">
+                            \${contentHtml}
+                        </div>
+                    \`;
+                }
+
+                chatContainer.appendChild(msgDiv);
+                scrollToBottom();
+            }
+
+            async function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                
+                const budget = Number(budgetInput.value) || 10000;
+                
+                const userMsg = { role: 'user', content: text };
+                appendMessage(userMsg);
+                history.push(userMsg);
+                saveHistory();
+                chatInput.value = '';
+                
+                typingIndicator.classList.remove('hidden');
+                scrollToBottom();
+                
+                try {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: text, budget })
+                    });
+                    const data = await res.json();
+                    
+                    const agentMsg = { role: 'agent', data: data };
+                    appendMessage(agentMsg);
+                    history.push(agentMsg);
+                    saveHistory();
+                } catch (e) {
+                    console.error(e);
+                    const errorMsg = { role: 'agent', data: { type: 'greeting', message: 'Error connecting to API. Please try again later.' } };
+                    appendMessage(errorMsg);
+                } finally {
+                    typingIndicator.classList.add('hidden');
+                }
+            }
+
+            sendButton.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => { 
+                if (e.key === 'Enter') sendMessage();
+            });
+        });
+    </script>
+</body>
+</html>
