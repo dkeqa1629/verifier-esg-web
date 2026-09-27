@@ -352,161 +352,144 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const chatContainer = document.getElementById('chat-history');
-            const chatInput = document.getElementById('chat-input');
-            const sendButton = document.getElementById('send-button');
-            const budgetInput = document.getElementById('budget-input');
-            const typingIndicator = document.getElementById('typing-indicator');
+        document.addEventListener('DOMContentLoaded', function() {
+            var chatContainer = document.getElementById('chat-history');
+            var chatInput = document.getElementById('chat-input');
+            var sendButton = document.getElementById('send-button');
+            var budgetInput = document.getElementById('budget-input');
+            var typingIndicator = document.getElementById('typing-indicator');
 
-            const history = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
-            if (history.length === 0) {
-                history.push({
+            var chatHistory = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+            if (chatHistory.length === 0) {
+                chatHistory.push({
                     role: 'agent',
                     data: {
                         type: 'greeting',
-                        message: 'Hello! I am Verifier.ai. How can I help you construct your ESG-compliant portfolio today?'
+                        message: 'Xin chào! Tôi là Verifier.AI — Trợ lý Đầu tư ESG thông minh. Hãy thử nhập: "Kiểm tra cho tôi AAPL, NVDA" hoặc "Tôi có 10.000$, hãy mua MSFT và GOOGL".'
                     }
                 });
                 saveHistory();
             }
-            
-            history.forEach(msg => appendMessage(msg, false));
+
+            chatHistory.forEach(function(msg) { appendMessage(msg, false); });
             scrollToBottom();
 
             function saveHistory() {
-                sessionStorage.setItem('chatHistory', JSON.stringify(history));
+                sessionStorage.setItem('chatHistory', JSON.stringify(chatHistory));
             }
 
             function scrollToBottom() {
-                setTimeout(() => {
+                setTimeout(function() {
                     chatContainer.scrollTop = chatContainer.scrollHeight;
                 }, 100);
             }
 
             function escapeHtml(unsafe) {
                 if (!unsafe) return '';
-                return unsafe
-                     .toString()
-                     .replace(/&/g, "&amp;")
-                     .replace(/</g, "&lt;")
-                     .replace(/>/g, "&gt;")
-                     .replace(/"/g, "&quot;")
-                     .replace(/'/g, "&#039;");
+                return unsafe.toString()
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
             }
 
-            function appendMessage(msg, animate = true) {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = \`flex gap-4 \${msg.role === 'user' ? 'justify-end' : ''} \${animate ? 'animate-fade-in-up' : ''}\`;
-                
-                if (msg.role === 'user') {
-                    msgDiv.innerHTML = \`
-                        <div class="bg-brand text-white p-4 rounded-xl rounded-tr-none text-sm max-w-md shadow-sm">
-                            \${escapeHtml(msg.content)}
-                        </div>
-                    \`;
-                } else {
-                    let contentHtml = '';
-                    if (msg.data.type === 'greeting') {
-                        contentHtml = \`<p class="text-gray-800">\${escapeHtml(msg.data.message)}</p>\`;
-                    } else if (msg.data.type === 'analysis') {
-                        contentHtml = msg.data.results.map(r => {
-                            const isApproved = r.z3_verification?.status === 'approved';
-                            const statusColor = isApproved ? 'text-brand' : 'text-red-600';
-                            const statusBg = isApproved ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
-                            const statusIcon = isApproved 
-                                ? \`<svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>\`
-                                : \`<svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>\`;
+            function appendMessage(msg, animate) {
+                if (animate === undefined) animate = true;
+                var msgDiv = document.createElement('div');
+                var classes = 'flex gap-4';
+                if (msg.role === 'user') classes += ' justify-end';
+                if (animate) classes += ' animate-fade-in-up';
+                msgDiv.className = classes;
 
-                            return \`
-                                <div class="mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
-                                    <div class="px-4 py-2 flex justify-between items-center border-b border-gray-100 \${statusBg}">
-                                        <div class="font-bold text-gray-800 flex items-center gap-2">
-                                            \${escapeHtml(r.ticker)} 
-                                            <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 \${statusColor} flex items-center gap-1 shadow-sm">
-                                                \${statusIcon} \${isApproved ? 'Approved' : 'Rejected'}
-                                            </span>
-                                        </div>
-                                        <div class="text-xs font-mono text-gray-500">\$\${r.market_price?.toFixed(2) || 'N/A'}</div>
-                                    </div>
-                                    <div class="p-4 bg-gray-50 grid grid-cols-2 gap-4 text-xs">
-                                        <div>
-                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">ESG Risk</div>
-                                            <div class="font-semibold text-gray-800">\${r.esg_risk_score || 'N/A'}</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">Controversy</div>
-                                            <div class="font-semibold text-gray-800">\${r.controversy_level || 'N/A'}</div>
-                                        </div>
-                                        <div class="col-span-2">
-                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">AI Decision</div>
-                                            <div class="text-gray-700 bg-white p-2 rounded border border-gray-200">
-                                                <span class="font-semibold text-gray-900">\${r.decision?.Action || 'HOLD'} \${r.decision?.Quantity || 0} shares</span> @ \$\${r.decision?.Target_Price || r.market_price || 0}<br>
-                                                <span class="text-gray-500 italic mt-1 block">\${escapeHtml(r.decision?.Reasoning || 'No reasoning provided.')}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-span-2">
-                                            <div class="text-gray-500 uppercase tracking-wider mb-1 text-[10px]">Z3 Verification</div>
-                                            <div class="text-gray-700 bg-white p-2 rounded border border-gray-200 font-mono text-[10px]">
-                                                \${escapeHtml(r.z3_verification?.reason || 'No verification data.')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            \`;
-                        }).join('');
+                if (msg.role === 'user') {
+                    msgDiv.innerHTML = '<div class="bg-brand text-white p-4 rounded-xl rounded-tr-none text-sm max-w-md shadow-sm">' + escapeHtml(msg.content) + '</div>';
+                } else {
+                    var contentHtml = '';
+                    if (msg.data && msg.data.type === 'greeting') {
+                        contentHtml = '<p class="text-gray-800">' + escapeHtml(msg.data.message) + '</p>';
+                    } else if (msg.data && msg.data.type === 'analysis' && msg.data.results) {
+                        contentHtml = '<p class="font-semibold text-gray-800 mb-3">' + escapeHtml(msg.data.message) + '</p>';
+                        msg.data.results.forEach(function(r) {
+                            var isApproved = (r.status === 'approved');
+                            var statusColor = isApproved ? 'text-green-700' : 'text-red-600';
+                            var statusBg = isApproved ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200';
+                            var statusLabel = isApproved ? '✅ Approved' : '❌ Rejected';
+                            var esgRisk = (r.esg_data && r.esg_data.esg_risk !== undefined) ? r.esg_data.esg_risk : 'N/A';
+                            var controversy = (r.esg_data && r.esg_data.controversy_level !== undefined) ? r.esg_data.controversy_level : 'N/A';
+                            var marketPrice = r.market_price ? r.market_price.toFixed(2) : 'N/A';
+                            var action = (r.decision && r.decision.Action) ? r.decision.Action : 'N/A';
+                            var qty = (r.decision && r.decision.Quantity) ? r.decision.Quantity : 0;
+                            var targetPrice = (r.decision && r.decision.Target_Price) ? r.decision.Target_Price : 0;
+                            var reasoning = (r.decision && r.decision.Reasoning) ? r.decision.Reasoning : '';
+                            var z3Msg = r.z3_message || 'N/A';
+                            var attempts = r.attempts || 1;
+
+                            contentHtml += '<div class="mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">';
+                            contentHtml += '<div class="px-4 py-2 flex justify-between items-center border-b border-gray-100 ' + statusBg + '">';
+                            contentHtml += '<div class="font-bold text-gray-800 flex items-center gap-2">' + escapeHtml(r.ticker) + ' <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 ' + statusColor + ' shadow-sm">' + statusLabel + '</span></div>';
+                            contentHtml += '<div class="text-xs font-mono text-gray-500">$' + marketPrice + '</div>';
+                            contentHtml += '</div>';
+                            contentHtml += '<div class="p-4 bg-gray-50 grid grid-cols-2 gap-4 text-xs">';
+                            contentHtml += '<div><div class="text-gray-500 uppercase tracking-wider mb-1" style="font-size:10px">ESG Risk</div><div class="font-semibold text-gray-800">' + esgRisk + '</div></div>';
+                            contentHtml += '<div><div class="text-gray-500 uppercase tracking-wider mb-1" style="font-size:10px">Controversy</div><div class="font-semibold text-gray-800">' + controversy + '</div></div>';
+                            contentHtml += '<div class="col-span-2"><div class="text-gray-500 uppercase tracking-wider mb-1" style="font-size:10px">AI Decision</div>';
+                            contentHtml += '<div class="text-gray-700 bg-white p-2 rounded border border-gray-200"><span class="font-semibold text-gray-900">' + escapeHtml(action) + ' ' + qty + ' shares</span> @ $' + targetPrice + '<br><span class="text-gray-500 italic mt-1 block">' + escapeHtml(reasoning) + '</span></div></div>';
+                            contentHtml += '<div class="col-span-2"><div class="text-gray-500 uppercase tracking-wider mb-1" style="font-size:10px">Z3 Verification (Attempts: ' + attempts + ')</div>';
+                            contentHtml += '<div class="text-gray-700 bg-white p-2 rounded border border-gray-200 font-mono" style="font-size:10px">' + escapeHtml(z3Msg) + '</div></div>';
+                            contentHtml += '</div></div>';
+                        });
+                        if (msg.data.budget) {
+                            contentHtml += '<div class="mt-2 p-3 bg-gray-50 rounded border border-gray-100 font-mono text-xs text-gray-500">Budget: $' + msg.data.budget.toLocaleString() + '</div>';
+                        }
+                    } else if (msg.data && msg.data.error) {
+                        contentHtml = '<p class="text-red-600">Error: ' + escapeHtml(msg.data.error) + '</p>';
                     }
 
-                    msgDiv.innerHTML = \`
-                        <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-md text-xs font-bold">AI</div>
-                        <div class="bg-white border border-gray-200 p-4 rounded-xl rounded-tl-none text-sm max-w-xl shadow-sm w-full">
-                            \${contentHtml}
-                        </div>
-                    \`;
+                    msgDiv.innerHTML = '<div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white shrink-0 shadow-md text-xs font-bold">AI</div><div class="bg-white border border-gray-200 p-4 rounded-xl rounded-tl-none text-sm max-w-xl shadow-sm w-full">' + contentHtml + '</div>';
                 }
 
                 chatContainer.appendChild(msgDiv);
                 scrollToBottom();
             }
 
-            async function sendMessage() {
-                const text = chatInput.value.trim();
+            function sendMessage() {
+                var text = chatInput.value.trim();
                 if (!text) return;
-                
-                const budget = Number(budgetInput.value) || 10000;
-                
-                const userMsg = { role: 'user', content: text };
+
+                var budget = Number(budgetInput.value) || 10000;
+
+                var userMsg = { role: 'user', content: text };
                 appendMessage(userMsg);
-                history.push(userMsg);
+                chatHistory.push(userMsg);
                 saveHistory();
                 chatInput.value = '';
-                
+
                 typingIndicator.classList.remove('hidden');
                 scrollToBottom();
-                
-                try {
-                    const res = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: text, budget })
-                    });
-                    const data = await res.json();
-                    
-                    const agentMsg = { role: 'agent', data: data };
-                    appendMessage(agentMsg);
-                    history.push(agentMsg);
-                    saveHistory();
-                } catch (e) {
-                    console.error(e);
-                    const errorMsg = { role: 'agent', data: { type: 'greeting', message: 'Error connecting to API. Please try again later.' } };
-                    appendMessage(errorMsg);
-                } finally {
+
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text, budget: budget })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
                     typingIndicator.classList.add('hidden');
-                }
+                    var agentMsg = { role: 'agent', data: data };
+                    appendMessage(agentMsg);
+                    chatHistory.push(agentMsg);
+                    saveHistory();
+                })
+                .catch(function(e) {
+                    console.error(e);
+                    typingIndicator.classList.add('hidden');
+                    var errorMsg = { role: 'agent', data: { type: 'greeting', message: 'Lỗi kết nối API. Vui lòng thử lại sau.' } };
+                    appendMessage(errorMsg);
+                });
             }
 
             sendButton.addEventListener('click', sendMessage);
-            chatInput.addEventListener('keypress', (e) => { 
+            chatInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') sendMessage();
             });
         });

@@ -203,7 +203,8 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(json.dumps({"error": "GEMINI_API_KEY not configured"}).encode())
+            self.wfile.write(json.dumps(
+                {"error": "GEMINI_API_KEY not configured"}).encode())
             return
 
         try:
@@ -233,7 +234,8 @@ class handler(BaseHTTPRequestHandler):
                     final_result = None
 
                     for attempt in range(1, 4):
-                        decision = llm_decide(ticker, esg_data, market_price, budget, api_key, error_msg)
+                        decision = llm_decide(
+                            ticker, esg_data, market_price, budget, api_key, error_msg)
                         is_safe, msg = z3_verify(decision, esg_data, budget)
 
                         if is_safe:
