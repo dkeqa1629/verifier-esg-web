@@ -73,7 +73,7 @@ def parse_user_prompt(message: str, api_key: str) -> list:
     Không giải thích, chỉ trả về JSON Array."""
 
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.5-flash-lite',
         contents=sys_prompt + "\n\nYêu cầu của người dùng: " + message,
         config=types.GenerateContentConfig(temperature=0.1),
     )
@@ -111,7 +111,7 @@ def llm_decide(ticker: str, esg_data: dict, price: float, budget: float, api_key
 }"""
 
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.5-flash-lite',
         contents=prompt,
         config=types.GenerateContentConfig(temperature=0.1),
     )
@@ -180,7 +180,7 @@ Người dùng vừa nói: "{message}"
 Hãy trả lời ngắn gọn, thân thiện bằng tiếng Việt. Nếu họ chào hỏi, hãy chào lại và giới thiệu ngắn về khả năng của bạn. Gợi ý họ thử nhập lệnh như: "Kiểm tra cho tôi AAPL, NVDA" hoặc "Tôi có 10.000$, hãy mua MSFT và GOOGL"."""
 
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.5-flash-lite',
         contents=prompt,
         config=types.GenerateContentConfig(temperature=0.7),
     )
